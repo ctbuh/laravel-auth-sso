@@ -1,0 +1,29 @@
+{
+    "name": "ctbuh/laravel-auth-sso",
+    "type": "library",
+    "description": "universal login provider",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Athlon1600",
+            "email": "Athlon2400@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ctbuh\\Login\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ctbuh\\Login\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "illuminate/contracts": "^5.7|^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4",
+        "orchestra/testbench": "^4.2"
+    }
+}
