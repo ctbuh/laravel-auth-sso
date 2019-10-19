@@ -2,6 +2,10 @@
 
 https://login.ctbuh.org/
 
+### Install
+
+> composer require ctbuh/laravel-auth-sso
+
 ### Usage
 
 Add 'sso' guard to config/auth.php
@@ -22,6 +26,20 @@ Make sure SESSION_DOMAIN= is set to primary domain.
 Reload all config
 
 > php artisan config:cache
+
+Use from within your controller or as middleware:
+
+```php
+Route::middleware('auth:sso')->group(function () {
+
+    Route::get('whoami', function(){
+        $user = auth()->guard('sso')->user();
+        return $user->getFirstName();
+    });
+    
+});
+```
+
 
 ### Route list
 
