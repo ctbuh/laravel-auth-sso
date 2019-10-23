@@ -2,6 +2,7 @@
 
 namespace ctbuh\Login;
 
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Http\Request;
 
@@ -20,12 +21,17 @@ class Controller
      * @var Manager
      */
     private $manager;
+    /**
+     * @var Repository
+     */
+    private $config;
 
-    public function __construct(Request $request, CookieJar $cookieJar, Manager $manager)
+    public function __construct(Request $request, CookieJar $cookieJar, Manager $manager, Repository $config)
     {
         $this->request = $request;
         $this->cookieJar = $cookieJar;
         $this->manager = $manager;
+        $this->config = $config;
     }
 
     public function login(Request $request)
@@ -40,9 +46,13 @@ class Controller
 
         if ($this->manager->validateToken($token)) {
 
-            // TODO: check if token passed in is valid
             $minutes_year = 60 * 24 * 365;
-            $cookie = $this->cookieJar->make('sso_token', $token, $minutes_year);
+
+            $default_domain = $this->config->get('session.domain');
+            $domain = $this->config->get('sso.cookie.domain', $default_domain);
+
+            // default: public function make($name, $value, $minutes = 0, $path = null, $domain = null, $secure = null, $httpOnly = true, $raw = false, $sameSite = null)
+            $cookie = $this->cookieJar->make('sso_token', $token, $minutes_year, null, $domain);
 
             if (empty($return_to)) {
                 $return_to = '/';
